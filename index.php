@@ -9,6 +9,27 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .warning {
+            color: red;
+            display: none;
+        }
+    </style>
+    <script>
+        function validateDate() {
+            const dateInput = document.getElementById('checkDate');
+            const warningMessage = document.getElementById('warningMessage');
+            const selectedDate = new Date(dateInput.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set to midnight to compare dates only
+
+            if (selectedDate < today) {
+                warningMessage.style.display = 'block';
+            } else {
+                warningMessage.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
     <?php include './layouts/navbar.html'; ?>
@@ -85,7 +106,10 @@
             <form action="index.php#rent" method="POST" class="mt-4">
                 <div class="form-group">
                     <label for="checkDate">Check Availability Date</label>
-                    <input type="date" class="form-control" id="checkDate" name="checkDate" required>
+                    <input type="date" class="form-control" id="checkDate" name="checkDate" onchange="validateDate()" required>
+                    <div id="warningMessage" class="warning">
+                        The date you entered is behind today!
+                    </div>
                 </div>
                 <button type="submit" name="checkAvailability" class="btn btn-primary">Check Availability</button>
             </form>
