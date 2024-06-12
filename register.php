@@ -43,6 +43,7 @@
                 <select class="form-control" id="gender" name="gender" required>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
+                    <option value="lgbt">LGBT</option>
                     <option value="others">Others</option>
                 </select>
             </div>
@@ -102,5 +103,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Connect to database and insert user data
+    $stmt = $conn->prepare("INSERT INTO tenants(lname, fname, mname, complete_address, email, )");
 }
 ?>

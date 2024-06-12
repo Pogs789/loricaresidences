@@ -1,63 +1,70 @@
 <?php
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
-    $password = hash('sha256', $_POST['password']);
+    $password = $_POST['password'];
 
-    $data = json_encode(['username' => $username, 'password' => $password]);
-    $options = [
-        'http' => [
+    $url = "http://localhost/loricaresidences/api/login/";
+    $data = array(
+        'Username' => $username,
+        'Password' => $password
+    );
+
+    $options = array(
+        'http' => array(
             'header'  => "Content-Type: application/json\r\n",
             'method'  => 'POST',
-            'content' => $data,
-        ],
-    ];
-    $context = stream_context_create($options);
-    $result = file_get_contents('http://localhost/loricaresidences/login', false, $context);
+            'content' => json_encode($data),
+        ),
+    );
+    $context  = stream_context_create($options);
+    $result = @file_get_contents($url, false, $context);
 
     if ($result === FALSE) {
-        echo "<div class='alert alert-danger text-center'>There was an error processing your request. Please try again.</div>";
+        $error = "Unable to contact API.";
     } else {
         $response = json_decode($result, true);
-        if (isset($response['status']) && $response['status'] == 'success') {
-            echo "<div class='alert alert-success text-center'>Successfully Logged in</div>";
-            header("Location: home.php");
+
+        if ($response['status'] == 'success') {
+            $_SESSION['username'] = $username;
+            header("Location: tenant/index.php");
             exit();
         } else {
-            echo "<div class='alert alert-danger text-center'>Incorrect Username or Password.</div>";
+            $error = $response['message'];
         }
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Lorica Residence Boarding House | LOGIN</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
     <?php include "./layouts/navbar.html"; ?>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h2 class="text-center">Login</h2>
-                <form method="POST" action="">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
-                </form>
+
+    <div class="container mt-5">
+        <h2>Login</h2>
+        <?php if (isset($error)) { echo '<div class="alert alert-danger">' . $error . '</div>'; } ?>
+        <form action="login.php" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
     </div>
+
     <?php include "./layouts/footer.html"; ?>
 </body>
 </html>
