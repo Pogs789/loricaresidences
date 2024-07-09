@@ -32,7 +32,42 @@
     </script>
 </head>
 <body>
-    <?php include './layouts/navbar.html'; ?>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Lorica Residence</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php#services">Our Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php#locations">Locations Nearby</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php#rooms">Our Existing Rooms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php#rent">Rent a Bedspace Now</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href = "#" data-toggle="modal" data-target="#LoginModal">Currently Staying?</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div id="home" class="section">
         <div class="container">
@@ -40,6 +75,139 @@
         </div>
     </div>
 
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="LoginModalTitle">Login to Access Your Tenant Account</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container mt-5">
+                        <?php
+                        if (isset($_GET['login'])) {
+                            if ($_GET['login'] == 'success') {
+                                echo '<div class="alert alert-success">Login successful!</div>';
+                            } elseif ($_GET['login'] == 'failed') {
+                                $reason = isset($_GET['reason']) ? $_GET['reason'] : 'unknown';
+                                switch ($reason) {
+                                    case 'empty':
+                                        $message = 'Username and password cannot be empty.';
+                                        break;
+                                    case 'inactive':
+                                        $message = 'Your account is inactive.';
+                                        break;
+                                    case 'invalid':
+                                        $message = 'Invalid username or password.';
+                                        break;
+                                    default:
+                                        $message = 'An unknown error occurred.';
+                                }
+                                echo '<div class="alert alert-danger">' . $message . '</div>';
+                            }
+                        }
+                        ?>
+                        <div class="text-center">
+                            <img src="./images/4170019.jpg" alt="Blank" class="image-center" width="250" height="250">
+                        </div>
+                        <form action="./controller/login.php" method="POST">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Register Modal-->
+    <!-- Modal -->
+    <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="RegisterModalTitle">Be Our Tenant</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-5">
+                    <form action="register.php" method="POST" enctype="multipart/form-data" class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="middleName">Middle Name</label>
+                                <input type="text" class="form-control" id="middleName" name="middleName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select class="form-control" id="gender" name="gender" required>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="others">Others</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="homeAddress">Home Address</label>
+                                <input type="text" class="form-control" id="homeAddress" name="homeAddress" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactNumber">Contact Number</label>
+                                <input type="text" class="form-control" id="contactNumber" name="contactNumber" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="document">Upload Valid Documents (PDF)</label>
+                                <input type="file" class="form-control-file" id="document" name="document" accept="application/pdf" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Register New Tenant</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Begin Homepage-->
     <div id="about" class="section bg-light">
         <div class="container">
             <h2 class="center-text">About Us</h2>
@@ -127,7 +295,7 @@
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
-                    echo '<form action="register.php" method="POST" class="mt-4">';
+                    echo '<form action="index.php#RegisterModal" method="POST" class="mt-4">';
                     echo '<div class="form-group">';
                     echo '<label for="selectBed">Select Room and Bed</label>';
                     echo '<select class="form-control" id="selectBed" name="selectedBed" required>';
@@ -136,7 +304,7 @@
                     }
                     echo '</select>';
                     echo '</div>';
-                    echo '<button type="submit" name="rentBedspace" class="btn btn-success">Rent a Room/Bedspace</button>';
+                    echo '<button type="submit" name="rentBedspace" class="btn btn-success" data-toggle="modal" data-target="#RegisterModal">Rent a Room/Bedspace</button>';
                     echo '</form>';
                 } else {
                     echo '<p class="mt-4 text-danger">No available rooms or beds found for the selected date.</p>';
@@ -149,5 +317,17 @@
     </div>
 
     <?php include './layouts/footer.html'; ?>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            <?php
+            if (isset($_GET['login'])) {
+                echo "$('#LoginModal').modal('show');";
+            }
+            ?>
+        });
+    </script>
 </body>
 </html>

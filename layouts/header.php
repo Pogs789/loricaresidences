@@ -6,7 +6,7 @@ include '../controller/connector.php'; // Include the database connection
 // Check if user is logged in (user_id is stored in session)
 if (!isset($_SESSION['user_id'])) {
     // If not logged in, redirect to login page or show an error message
-    header("Location: ../login.php");
+    header("Location: ../index.php");
     exit();
 }
 // Assuming tenant_id is stored in session
