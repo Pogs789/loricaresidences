@@ -41,6 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }else{
             $registerCondition = "An Error Occured during the Registration Process. Please Try Again.";
         }
+    }
+}
 
         /*
         // Data to be sent to the C# API
@@ -86,5 +88,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: Missing required form data.";
     }
         */
-}
-?>
