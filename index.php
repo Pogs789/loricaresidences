@@ -15,21 +15,6 @@
             display: none;
         }
     </style>
-    <script>
-        function validateDate() {
-            const dateInput = document.getElementById('checkDate');
-            const warningMessage = document.getElementById('warningMessage');
-            const selectedDate = new Date(dateInput.value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); // Set to midnight to compare dates only
-
-            if (selectedDate < today) {
-                warningMessage.style.display = 'block';
-            } else {
-                warningMessage.style.display = 'none';
-            }
-        }
-    </script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -62,7 +47,7 @@
                         <a class="nav-link" href="index.php#rent">Rent a Bedspace Now</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href = "#" data-toggle="modal" data-target="#LoginModal">Currently Staying?</a>
+                        <a class="nav-link" href = "login.php">Currently Staying?</a>
                     </li>
                 </ul>
             </div>
@@ -72,64 +57,6 @@
     <div id="home" class="section">
         <div class="container">
             <h1 class="center-text">Welcome to Lorica Residence Boarding House</h1>
-        </div>
-    </div>
-
-
-    <!-- Login Modal -->
-    <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="LoginModalTitle">Login to Access Your Tenant Account</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container mt-5">
-                        <?php
-                        if (isset($_GET['login'])) {
-                            if ($_GET['login'] == 'success') {
-                                echo '<div class="alert alert-success">Login successful!</div>';
-                            } elseif ($_GET['login'] == 'failed') {
-                                $reason = isset($_GET['reason']) ? $_GET['reason'] : 'unknown';
-                                switch ($reason) {
-                                    case 'empty':
-                                        $message = 'Username and password cannot be empty.';
-                                        break;
-                                    case 'inactive':
-                                        $message = 'Your account is inactive.';
-                                        break;
-                                    case 'invalid':
-                                        $message = 'Invalid username or password.';
-                                        break;
-                                    default:
-                                        $message = 'An unknown error occurred.';
-                                }
-                                echo '<div class="alert alert-danger">' . $message . '</div>';
-                            }
-                        }
-                        ?>
-                        <div class="text-center">
-                            <img src="./images/4170019.jpg" alt="Blank" class="image-center" width="250" height="250">
-                        </div>
-                        <form action="./controller/login.php" method="POST">
-                            <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" class="form-control" id="username" name="username">
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Login</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -275,8 +202,8 @@
                 <div class="form-group">
                     <label for="checkDate">Check Availability Date</label>
                     <input type="date" class="form-control" id="checkDate" name="checkDate" onchange="validateDate()" required>
-                    <div id="warningMessage" class="warning">
-                        The date you entered is behind today!
+                    <div id="warningMessage" class="warning" style="display: none;">
+                        The date you entered is behind today! Please Select another date.
                     </div>
                 </div>
                 <button type="submit" name="checkAvailability" class="btn btn-primary">Check Availability</button>

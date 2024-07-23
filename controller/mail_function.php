@@ -22,7 +22,7 @@ function sendOTP($email, $otp){
     $mail->Mailer = "smtp";
     $mail->SetFrom("loricaresidences@gmail.com", "Cesphillip Lorica, Owner if Lorica Residence");
     $mail->addAddress($email);
-    $mail->Subject = "Your OTP to Use the Boarding House System";
+    $mail->Subject = "Your One-Time Password to Use the Boarding House System";
     $mail->MsgHTML($message_body);
     $mail->IsHTML(true);
     $result = $mail->send();

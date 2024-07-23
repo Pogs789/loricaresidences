@@ -24,9 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if ($verification->num_rows == 1) {
         $verification->fetch();
-        if ($status == 0) { // Assuming 0 means active and 1 means inactive
-            $_SESSION['user_id'] = $user_session;
-            header("Location: ../index.php?login=success");
+        if ($status == 1) {
+            $_SESSION['email'] = $username;
+            header("Location: ./tenant/otp_page.php");
             exit();
         } else {
             header("Location: ../index.php?login=failed&reason=inactive");

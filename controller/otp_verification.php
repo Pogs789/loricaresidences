@@ -7,10 +7,10 @@ $error_message = "";
 
 require_once('connector.php');
 
-if(!empty($_SESSION["email"])){
-    $username_id = $_SESSION["email"];
-    $stmt = $conn->prepare("");
-    $stmt->bind_param('s', $username_id);
+if(!empty($_SESSION["username"])){
+    $username = $_SESSION["username"];
+    $stmt = $conn->prepare("SELECT t.email FROM tenant t JOIN user u ON t.tenant_id = u.tenant_id WHERE u.username = ?;");
+    $stmt->bind_param('s', $username);
     $stmt->execute();
 
     if($stmt->num_rows() > 0){
@@ -36,6 +36,7 @@ if(!empty($_SESSION["email"])){
 }
 
 if(!empty($_POST["submit_otp"])){
+
     $stmt = $conn->prepare("SELECT * FROM otp_verification WHERE otp = ? AND is_expired != 1 AND NOW() <= DATE_ADD(created_at, INTERVAL 24 HOUR)");
     $stmt->bind_param('i', $_POST["submit_otp"]);
     $stmt->execute();
@@ -44,8 +45,10 @@ if(!empty($_POST["submit_otp"])){
         $stmt2->bind_param('i', $_POST["submit_otp"]);
         $stmt2->execute();
         $success = 2;
+        $stmt2->close();
     }else{
         $success = 1;
         $error_message = "The OTP You Entered is Invalid. Please Try Again.";
     }
+    $stmt->close();
 }
