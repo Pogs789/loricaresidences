@@ -1,54 +1,40 @@
 <?php
-
-/*After the user verifies their login credentials into the system, the latter will send a 6-Digit random number to the provided text. */
 session_start();
-$success = "";
-$error_message = "";
-
 require_once('connector.php');
+require_once('mail_function.php');
 
-if(!empty($_SESSION["username"])){
+if (!empty($_SESSION["username"])) {
     $username = $_SESSION["username"];
     $stmt = $conn->prepare("SELECT t.email FROM tenant t JOIN user u ON t.tenant_id = u.tenant_id WHERE u.username = ?;");
     $stmt->bind_param('s', $username);
     $stmt->execute();
+    $stmt->bind_result($email);
+    $stmt->fetch();
+    $stmt->close();
 
-    if($stmt->num_rows() > 0){
+    if ($email) {
         $otp = rand(100000, 999999);
+        $mail_status = sendOTP($email, $otp);
 
-        require_once("mail_function.php");
-        $mail_status = sendOTP($_SESSION["email"], $otp);
-
-        if($mail_status == 1){
-            $stmt2 = $conn->prepare("INSERT INTO otp_verfication(otp, is_expired, created_at) VALUES(?, 0, NOW())");
+        if ($mail_status == 1) {
+            $stmt2 = $conn->prepare("INSERT INTO otp_verification (otp, is_expired, created_at) VALUES (?, 0, NOW())");
             $stmt2->bind_param('i', $otp);
             $stmt2->execute();
-            if(!empty($stmt2->insert_id)){
-                $success = 1;
-            }
             $stmt2->close();
+        } else {
+            $_SESSION['error_message'] = "Failed to send OTP. Please try again.";
+            header("Location: ../login.php?otp=required");
+            exit();
         }
-    }else{
-        $error_message = "Account Does not Exist in the System. Please Register First.";
+    } else {
+        $_SESSION['error_message'] = "Account does not exist in the system. Please register first.";
+        header("Location: ../login.php");
+        exit();
     }
-
-    $stmt->close();
+} else {
+    header("Location: ../login.php");
+    exit();
 }
 
-if(!empty($_POST["submit_otp"])){
-
-    $stmt = $conn->prepare("SELECT * FROM otp_verification WHERE otp = ? AND is_expired != 1 AND NOW() <= DATE_ADD(created_at, INTERVAL 24 HOUR)");
-    $stmt->bind_param('i', $_POST["submit_otp"]);
-    $stmt->execute();
-    if(!empty($stmt->num_rows() > 0)){
-        $stmt2 = $conn->prepare("UPDATE otp_verification SET is_expired = 1 WHERE otp = ?");
-        $stmt2->bind_param('i', $_POST["submit_otp"]);
-        $stmt2->execute();
-        $success = 2;
-        $stmt2->close();
-    }else{
-        $success = 1;
-        $error_message = "The OTP You Entered is Invalid. Please Try Again.";
-    }
-    $stmt->close();
-}
+header("Location: ../login.php?otp=required");
+exit();

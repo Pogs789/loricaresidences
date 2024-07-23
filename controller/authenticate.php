@@ -1,15 +1,10 @@
 <?php
 session_start();
 require_once "connector.php";
-$username = "";
-$password = "";
-$user_session = $count = 0;
-$failed_attempts = 0;
-$status = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST['username']) || empty($_POST['password'])) {
-        header("Location: ../index.php?login=failed&reason=empty");
+        header("Location: ../login.php?login=failed&reason=empty");
         exit();
     }
     
@@ -25,18 +20,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($verification->num_rows == 1) {
         $verification->fetch();
         if ($status == 1) {
-            $_SESSION['email'] = $username;
-            header("Location: ./tenant/otp_page.php");
+            $_SESSION['username'] = $username;
+            header("Location: ../otp_verification.php");
             exit();
         } else {
-            header("Location: ../index.php?login=failed&reason=inactive");
+            header("Location: ../login.php?login=failed&reason=inactive");
             exit();
         }
     } else {
-        header("Location: ../index.php?login=failed&reason=invalid");
+        header("Location: ../login.php?login=failed&reason=invalid");
         exit();
     }
 } else {
-    header("Location: ../index.php?login=failed&reason=unknown");
+    header("Location: ../login.php?login=failed&reason=unknown");
     exit();
 }

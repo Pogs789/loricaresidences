@@ -1,87 +1,85 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Lorica Residences - Login</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="fonts/icomoon/style.css">
-        <link rel="stylesheet" href="css/owl.carousel.min.css">
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <!-- Style -->
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        
-        <!-- Login Modal -->
-        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModalTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="LoginModalTitle">Login to Access Your Tenant Account</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container mt-5">
-                            <?php
-                            if (isset($_GET['login'])) {
-                                if ($_GET['login'] == 'success') {
-                                    echo '<div class="alert alert-success">Login successful! Please Wait.</div>';
-                                } elseif ($_GET['login'] == 'failed') {
-                                    $reason = isset($_GET['reason']) ? $_GET['reason'] : 'unknown';
-                                    switch ($reason) {
-                                        case 'empty':
-                                            $message = 'Username and password cannot be empty.';
-                                            header("Location: index.php");
-                                            break;
-                                        case 'inactive':
-                                            $message = 'Your account is inactive.';
-                                            header("Location: index.php");
-                                            break;
-                                        case 'invalid':
-                                            $message = 'Invalid username or password.';
-                                            header("Location: index.php");
-                                            break;
-                                        default:
-                                            $message = 'An unknown error occurred.';
-                                            header("Location: index.php");
-                                    }
-                                    echo '<div class="alert alert-danger">' . $message . '</div>';
-                                }
-                            }
-                            ?>
-                            <div class="text-center">
-                                <img src="./images/4170019.jpg" alt="Blank" class="image-center" width="250" height="250">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lorica Residences - Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .form-container { transition: transform 0.5s ease-in-out; }
+        .swipe-left { transform: translateX(-100%); }
+        .swipe-right { transform: translateX(0); }
+    </style>
+</head>
+<body>
+    <div class="d-lg-flex half">
+        <div class="bg order-1 order-md-2" style="background-image: url('images/Hero-Boarding.jpg');"></div>
+        <div class="contents order-2 order-md-1">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-7">
+                        <div id="login-form" class="form-container">
+                            <div class="mb-4">
+                                <h3>Tenant Log In</h3>
+                                <p class="mb-4">To Check Your Tenant Information While Staying at Lorica Residence, You Need to Login First.</p>
                             </div>
-                            <form action="./controller/login.php" method="POST">
-                                <div class="form-group">
+                            <form action="./controller/authenticate.php" method="post">
+                                <div class="form-group first">
                                     <label for="username">Username</label>
                                     <input type="text" class="form-control" id="username" name="username">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group last mb-3">
                                     <label for="password">Password</label>
                                     <input type="password" class="form-control" id="password" name="password">
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Login</button>
+                                <div class="d-flex mb-5 align-items-center">
+                                    <label class="control control--checkbox mb-0"><span class="caption">Remember me</span>
+                                    <input type="checkbox"/>
+                                    <div class="control__indicator"></div>
+                                    </label>
+                                    <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span> 
                                 </div>
+                                <input type="submit" value="Log In" class="btn btn-block btn-primary">
                             </form>
                         </div>
+                        <div id="otp-form" class="form-container">
+                            <div class="mb-4">
+                                <h3>Enter OTP</h3>
+                                <p class="mb-4">Please enter the OTP sent to your email.</p>
+                            </div>
+                            <form action="./controller/verify_otp.php" method="post">
+                                <div class="form-group first">
+                                    <label for="otp">OTP</label>
+                                    <input type="text" class="form-control" id="otp" name="otp">
+                                </div>
+                                <input type="submit" value="Verify OTP" class="btn btn-block btn-primary">
+                            </form>
+                        </div>
+                        <?php if (!empty($error_message)): ?>
+                            <div class="alert alert-danger"><?php echo $error_message; ?></div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            <?php if (isset($_GET['otp']) && $_GET['otp'] == 'required'): ?>
+                $('#login-form').addClass('swipe-left');
+                $('#otp-form').addClass('swipe-right');
+            <?php endif; ?>
+        });
+    </script>
+</body>
 </html>
