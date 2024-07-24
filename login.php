@@ -42,24 +42,12 @@
                                 </div>
                                 <input type="submit" value="Log In" class="btn btn-block btn-primary">
                             </form>
-                            <?php if (isset($_GET['error'])): ?>
-                                <div class="alert alert-danger mt-3">
-                                    <?php 
-                                    switch ($_GET['error']) {
-                                        case 'empty':
-                                            echo "Please fill in both fields.";
-                                            break;
-                                        case 'inactive':
-                                            echo "Your account is inactive. Please contact the landlord of the property.";
-                                            break;
-                                        case 'invalid':
-                                            echo "Invalid username or password.";
-                                            break;
-                                        default:
-                                            echo "An unknown error occurred.";
-                                    }
-                                    ?>
-                                </div>
+                            <!--The Modal Section-->
+                            <?php
+                                session_start();
+                                if (!empty($_SESSION['error_message'])): 
+                            ?>
+                                <div class="alert alert-danger"><?php echo $_SESSION['error_message']; unset($_SESSION['error_message']); ?></div>
                             <?php endif; ?>
                         </div>
                     </div>

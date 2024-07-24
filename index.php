@@ -169,13 +169,14 @@
 
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        $image = str_replace("\\", "/", $row['image_link']);
+                        // Using the serve_image.php script to serve images
+                        $image = urlencode($row['image_link']); // Encode the path for the URL
                         echo "<div class='col-md-4 mb-4'>";
                         echo "<div class='card'>";
-                        echo "<img class='card-img-top' src='" . $image . "' alt='Room image'>";
+                        echo "<img class='card-img-top' src='serve_image.php?path=" . $image . "' alt='Room image'>";
                         echo "<div class='card-body'>";
-                        echo "<h5 class='card-title'>Room Number: " . $row['room_no'] . "</h5>";
-                        echo "<p class='card-text'>" . $row['description'] . "</p>";
+                        echo "<h5 class='card-title'>Room Number: " . htmlspecialchars($row['room_no'], ENT_QUOTES, 'UTF-8') . "</h5>";
+                        echo "<p class='card-text'>" . htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8') . "</p>";
                         echo "</div>";
                         echo "</div>";
                         echo "</div>";
@@ -187,6 +188,7 @@
             </div>
         </div>
     </div>
+
 
     <div id="contact" class="section bg-light">
         <div class="container">
