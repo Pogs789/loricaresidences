@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Lorica Residences - Login</title>
+    <title>Lorica Residences - Verify OTP</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
@@ -21,39 +21,22 @@
                     <div class="col-md-7">
                         <div class="form-container">
                             <div class="mb-4">
-                                <h3>Tenant Log In</h3>
-                                <p class="mb-4">To Check Your Tenant Information While Staying at Lorica Residence, You Need to Login First.</p>
+                                <h3>Enter OTP</h3>
+                                <p class="mb-4">A 6-Digit Verification Code Has Been Sent to Your Email. Verify Your 6-Digit Code.</p>
                             </div>
-                            <form action="./controller/authenticate.php" method="post">
+                            <form action="./controller/verify_otp.php" method="post">
                                 <div class="form-group first">
-                                    <label for="username">Username</label>
-                                    <input type="text" class="form-control" id="username" name="username">
+                                    <label for="otp">OTP</label>
+                                    <input type="text" class="form-control" id="otp" name="otp">
                                 </div>
-                                <div class="form-group last mb-3">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password">
-                                </div>
-                                <div class="d-flex mb-5 align-items-center">
-                                    <label class="control control--checkbox mb-0"><span class="caption">Remember me</span>
-                                    <input type="checkbox"/>
-                                    <div class="control__indicator"></div>
-                                    </label>
-                                    <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span> 
-                                </div>
-                                <input type="submit" value="Log In" class="btn btn-block btn-primary">
+                                <input type="submit" value="Verify OTP" class="btn btn-block btn-primary">
                             </form>
                             <?php if (isset($_GET['error'])): ?>
                                 <div class="alert alert-danger mt-3">
                                     <?php 
                                     switch ($_GET['error']) {
-                                        case 'empty':
-                                            echo "Please fill in both fields.";
-                                            break;
-                                        case 'inactive':
-                                            echo "Your account is inactive. Please contact the landlord of the property.";
-                                            break;
                                         case 'invalid':
-                                            echo "Invalid username or password.";
+                                            echo "The OTP you entered is invalid. Please try again.";
                                             break;
                                         default:
                                             echo "An unknown error occurred.";
