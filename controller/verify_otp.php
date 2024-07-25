@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt2 = $conn->prepare("UPDATE otp_verification SET is_expired = 1 WHERE otp = ?");
         $stmt2->bind_param('i', $otp);
         $stmt2->execute();
-        header("Location: ../tenant/dashboard.php");
+        header("Location: ../tenant/index.php");
         exit();
     } else {
         header("Location: ../verify_otp.php?error=invalid");

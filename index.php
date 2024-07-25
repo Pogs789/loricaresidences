@@ -1,4 +1,6 @@
-<?php include "./controller/connector.php"; ?>
+<?php
+session_start(); 
+include "./controller/connector.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lorica Residence Boarding House</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/styles.css">
     <style>
@@ -54,7 +56,7 @@
         </div>
     </nav>
 
-    <div id="home" class="section">
+    <div id="home" class="">
         <div class="container">
             <h1 class="center-text">Welcome to Lorica Residence Boarding House</h1>
         </div>
@@ -135,7 +137,7 @@
     </div>
 
     <!--Begin Homepage-->
-    <div id="about" class="section bg-light">
+    <div id="about" class=" bg-light">
         <div class="container">
             <h2 class="center-text">About Us</h2>
             <p>Lorica Residence's Bedspace and Transient House is one of the Affordable Rental Bedspacing and Transient House located in the Humble Town of Daraga, Albay.
@@ -145,21 +147,37 @@
         </div>
     </div>
 
-    <div id="services" class="section">
+    <div id="services" class="">
         <div class="container">
             <h2 class="center-text">Our Services</h2>
-            <p>Details of our services.</p>
+            <!--The Main Card-->
+            <div class='col-md-4 mb-4'>
+                <div class='card'>
+                    <div class='card-body'>
+                        <h5 class='card-title'>Service 1</h5>
+                        <p class='card-text'>Description</p>
+                    </div>
+                </div>
+            </div>
+            <div class='col-md-4 mb-4'>
+                <div class='card'>
+                    <div class='card-body'>
+                        <h5 class='card-title'>Service 1</h5>
+                        <p class='card-text'>Description</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="locations" class="section bg-light">
+    <div id="locations" class=" bg-light">
         <div class="container">
             <h2 class="center-text">Locations Nearby</h2>
             <p>Bicol University - Daraga. Bicol University - Main Campus, Bicol University - East Campus.</p>
         </div>
     </div>
 
-    <div id="rooms" class="section">
+    <div id="rooms" class="">
         <div class="container">
             <h2 class="center-text">Our Existing Rooms</h2>
             <div class="row">
@@ -173,7 +191,7 @@
                         $image = urlencode($row['image_link']); // Encode the path for the URL
                         echo "<div class='col-md-4 mb-4'>";
                         echo "<div class='card'>";
-                        echo "<img class='card-img-top' src='serve_image.php?path=" . $image . "' alt='Room image'>";
+                        echo "<img class='card-img-top' src='./controller/serve_image.php?path=" . $image . "' alt='Room image' height = '300' width = '300'>";
                         echo "<div class='card-body'>";
                         echo "<h5 class='card-title'>Room Number: " . htmlspecialchars($row['room_no'], ENT_QUOTES, 'UTF-8') . "</h5>";
                         echo "<p class='card-text'>" . htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8') . "</p>";
@@ -190,14 +208,14 @@
     </div>
 
 
-    <div id="contact" class="section bg-light">
+    <div id="contact" class=" bg-light">
         <div class="container">
             <h2 class="center-text">Contact Us</h2>
             <p>Contact information.</p>
         </div>
     </div>
 
-    <div id="rent" class="section">
+    <div id="rent" class="">
         <div class="container">
             <h2 class="center-text">Rent a Bedspace Now</h2>
             <form action="index.php#rent" method="POST" class="mt-4">
@@ -249,14 +267,5 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            <?php
-            if (isset($_GET['login'])) {
-                echo "$('#LoginModal').modal('show');";
-            }
-            ?>
-        });
-    </script>
 </body>
 </html>

@@ -28,33 +28,55 @@
                                 <div class="form-group first">
                                     <label for="username">Username</label>
                                     <input type="text" class="form-control" id="username" name="username">
-                                </div>
+                                </div><br><br>
                                 <div class="form-group last mb-3">
                                     <label for="password">Password</label>
                                     <input type="password" class="form-control" id="password" name="password">
                                 </div>
-                                <div class="d-flex mb-5 align-items-center">
-                                    <label class="control control--checkbox mb-0"><span class="caption">Remember me</span>
-                                    <input type="checkbox"/>
-                                    <div class="control__indicator"></div>
-                                    </label>
-                                    <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span> 
-                                </div>
                                 <input type="submit" value="Log In" class="btn btn-block btn-primary">
                             </form>
-                            <!--The Modal Section-->
-                            <?php
-                                session_start();
-                                if (!empty($_SESSION['error_message'])): 
-                            ?>
-                                <div class="alert alert-danger"><?php echo $_SESSION['error_message']; unset($_SESSION['error_message']); ?></div>
-                            <?php endif; ?>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Error While Logging In</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <?php
+                                            session_start();
+                                            if (!empty($_SESSION['error_message'])) {
+                                                echo $_SESSION['error_message'];
+                                                unset($_SESSION['error_message']);
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Okay</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            <?php
+            session_start();
+            if (!empty($_SESSION['error_message'])) {
+                echo 'var myModal = new bootstrap.Modal(document.getElementById("exampleModal"), {});';
+                echo 'myModal.show();';
+                unset($_SESSION['error_message']);
+            }
+            ?>
+        });
+    </script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

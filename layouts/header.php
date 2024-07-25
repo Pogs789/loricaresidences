@@ -1,18 +1,17 @@
 <!-- header.php -->
 <?php
 session_start();
-include '../controller/connector.php'; // Include the database connection
+include '../controller/connector.php'; 
 
-// Check if user is logged in (user_id is stored in session)
 if (!isset($_SESSION['user_id'])) {
-    // If not logged in, redirect to login page or show an error message
     header("Location: ../index.php");
     exit();
 }
-// Assuming tenant_id is stored in session
 $tenantId = $_SESSION['user_id'];
 
-// Fetch tenant information from the database
+/**
+ * Get the Information related to the logged tenant.
+ */
 $sql = "SELECT t.fname, r.room_no, bm.bed_number, ba.due_date, bm.monthly_rent 
 FROM bed_assignment ba CROSS JOIN bed_management bm ON ba.bed_id = bm.bed_id CROSS JOIN tenant t ON ba.tenant_id = t.tenant_id CROSS JOIN rooms r ON ba.room_id = r.room_id
 WHERE t.tenant_id = ?";
@@ -29,7 +28,7 @@ $tenantInfo = $result->fetch_assoc();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tenant Panel</title>
+    <title>Lorica Residence Boarding House</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/styles.css">
@@ -48,8 +47,8 @@ $tenantInfo = $result->fetch_assoc();
             </a>
             <div class="dropdown-menu" aria-labelledby="profileDropdown">
                 <a class="dropdown-item" href="edit_profile.php"><i class="fa fa-user"></i> Edit Profile</a>
-                <a class="dropdown-item" href="../login.php"><i class="fa fa-sign-out"></i> Logout</a>
-            </div>
+                <a class="dropdown-item" href="../controller/logout.php"><i class="fa fa-sign-out"></i> Logout</a>
+            </div>  
         </div>
     </div>
     <div class="content">
